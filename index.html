@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Moon Base Alpha Train Schedule</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Oxygen:300,400,700" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://use.fontawesome.com/releases/v5.0.3/css/all.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/moon-favicon.ico">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  </head>
+  <body>
+
+    <!-- Header -->
+    <div class="jumbotron">
+      <h1>MOON BASE ALPHA TRAIN SCHEDULER</h1>
+      <p>it's a long ride, but you can't beat that view</p>
+    </div>
+
+    <div class="container">
+      <h2>Moon Base Alpha Train Schedule</h2>
+      <!-- Schedule Table -->
+      <table class="table text-center table-dark table-striped">
+        <!-- Table Head -->
+        <thead>
+          <tr>
+            <th scope="col">Train Name</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Frequency (min)</th>
+            <th scope="col">Next Arrival</th>
+            <th scope="col">Minutes Away</th>
+          </tr>
+        </thead>
+        <!-- Table Body (Dynamically Populated from Firebase) -->
+        <tbody id="schedule-body"></tbody>
+      </table>
+    </div>
+
+
+
+    <!-- Input Form -->
+    <div class="container">
+      <h2>Add Train</h2>
+      <form>
+        <div class="form-group">
+          <label for="input-train-name">Train Name</label>
+          <input type="text" class="form-control" id="input-train-name" placeholder="Sea of Showers Express">
+        </div>
+        <div class="form-group">
+          <label for="input-destination">Destination</label>
+          <input type="text" class="form-control" id="input-destination" placeholder="Mare Imbrium">
+        </div>
+        <div class="form-group">
+          <label for="input-first-train-time">First Train Time (HH:mm)</label>
+          <input type="time" class="form-control" id="input-first-train-time" placeholder="00:30">
+        </div>
+        <div class="form-group">
+          <label for="input-frequency">Frequency (min)</label>
+          <input type="number" class="form-control" id="input-frequency" placeholder="90">
+        </div>
+        <button type="submit" class="btn add-train-btn">Add Train</button>
+      </form>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="assets/javascript/app.js"></script>
+  </body>
+</html>
