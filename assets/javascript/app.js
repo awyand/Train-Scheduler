@@ -40,19 +40,19 @@ $(document).ready(function() {
     // Check to see if user left any fields blank
     if (userTrainName.length === 0 || userDestination.length === 0 || userFirstTrainTime.length === 0 || userFrequency.length === 0) {
       // Tell the user to complete all fields
-      alert("please complete all fields");
+      alert("Please complete all fields");
     // Check to see if user has entered invalid numbers for first train in HH:mm
     // This should be handled by form input type (time) but as a fallback
     } else if (parseInt(userFirstTrainTime.substring(0,2)) >= 24) {
       // Tell the user that hours must be less than 24
-      alert("hours must be less than 24");
+      alert("Hours must be less than 24");
     } else if (parseInt(userFirstTrainTime.substring(3,5)) >= 60) {
       // Tell the user that minutes must be less than 60
-      alert("minutes must be less than 60");
+      alert("Minutes must be less than 60");
     // Check to see if user has entered invalid number for frequency
     } else if (parseInt(userFrequency) <= 0) {
       // Tell the user that frequnecy must be a positive number
-      alert("frequnecy must be a positive number");
+      alert("Frequnecy must be a positive number");
     // If all user input validation is okay, continue with Firebase population
     } else {
       // Save user inputs to a newTrain object to push to Firebase
@@ -75,7 +75,9 @@ $(document).ready(function() {
   });
 
   // Firebase event for child added hanlder
+
   db.ref().on("child_added", function(data, prevChildKey) {
+
     // Store each child to an object
     var dbTrain = {
       dbTrainName : data.val().trainName,
@@ -83,19 +85,6 @@ $(document).ready(function() {
       dbFirstTrainTime : data.val().firstTrainTime,
       dbFrequency : data.val().frequency
     }
-
-
-    // var testFirst = "01:00";
-    // var testFreq = "60";
-    // var testFirstCoverted = moment(testFirst,"HH:mm");
-    // var diffTime = moment().diff(moment(testFirstCoverted), "minutes");
-    //
-    // var remainder = diffTime % testFreq;
-    // var minutesRemaining = testFreq - remainder;
-    // console.log(`Minutes remaining: ${minutesRemaining}`);
-    // var nextTrain = moment().add(minutesRemaining, "minutes");
-    // var nextTrainConverted = moment(nextTrain).format("HH:mm");
-    // console.log(`Next Train: ${nextTrainConverted}`);
 
     // Calculate Next Arrival and Minutes Away
 
@@ -114,7 +103,8 @@ $(document).ready(function() {
     // Check to see if first train is in the future
     if (minutesSinceFirstTrain < 0) {
       nextTrainTime = dbFirstTrainTimeObject;
-      minutesUntilNextTrain = Math.abs(minutesSinceFirstTrain);
+      // 1 is added to match the way that moment does rounding for minutes
+      minutesUntilNextTrain = Math.abs(minutesSinceFirstTrain) + 1;
     } else {
       // Divide minutes passed since first train by frequency and get remainder (i.e. how many minutes since the most recent train left)
       var minutesSinceLastTrain = minutesSinceFirstTrain % frequencyInt;
@@ -139,6 +129,16 @@ $(document).ready(function() {
     // Add each child to table
     $("#schedule-body").append(`
       <tr>
+        <td>
+          <button class="row-btn trash-btn" data-key="${data.key}">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </td>
+        <td>
+          <button class="row-btn edit-btn" data-key="${data.key}">
+            <i class="far fa-edit"></i>
+          </button>
+        </td>
         <td>${dbTrain.dbTrainName}</td>
         <td>${dbTrain.dbDestination}</td>
         <td>${dbTrain.dbFrequency}</td>
@@ -146,5 +146,18 @@ $(document).ready(function() {
         <td class="${blinkStatus}">${minutesUntilNextTrain}</td>
       </tr>
       `);
+  });
+
+  // Delete button click handler
+  $(document).on("click", ".trash-btn", function() {
+    // Get unique Firebase ID from button (added on button creation)
+    var trainKey = $(this).attr("data-key");
+    // Remove object from Firebase
+    db.ref(trainKey).remove();
+  });
+
+  // Edit button click handler
+  $(document).on("click", ".edit-btn", function() {
+    console.log($(this).attr("data-key"));
   });
 });
