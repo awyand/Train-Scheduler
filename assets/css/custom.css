@@ -26,14 +26,26 @@ body {
 }
 
 /* MODAL */
-#edit-modal-train-name {
+
+.modal-header {
+  background-color: #F2B632;
+}
+
+.modal-title {
   font-weight: 700;
+}
+
+#edit-modal-train-name {
   font-style: italic;
 }
 
 #save-edits-btn {
   background-color: #F2B632;
   color: #121212;
+}
+
+#save-edits-btn:hover {
+  background-color: #C79629;
 }
 
 .error {

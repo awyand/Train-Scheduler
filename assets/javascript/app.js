@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+  var isEditing = false;
+
 
   ////// FIREBASE //////
 
@@ -34,7 +36,8 @@ $(document).ready(function() {
 
     // If validateInputs() returns false
     if (!validateInputs(userTrainName, userDestination, userFirstTrainTime, userFrequency)) {
-      // Pop up modal with instructions
+
+      // Show error modal
       $("#error-modal").modal("show");
     } else {
       // Continue with populating Firebase and DOM
@@ -70,6 +73,7 @@ $(document).ready(function() {
 
   // Edit button click handler
   $(document).on("click", ".edit-btn", function() {
+    isEditing = true;
     // Get unique Firebase ID from button (added on button creation)
     var trainKey = $(this).attr("data-key");
     // Get current values from Firebase
@@ -101,7 +105,9 @@ $(document).ready(function() {
 
     // If validateInputs() returns false
     if (!validateInputs(userTrainName, userDestination, userFirstTrainTime, userFrequency)) {
-      // Pop up modal with instructions
+      // Hide edit modal
+      $("#edit-modal").modal("hide");
+      // Show error modal
       $("#error-modal").modal("show");
     } else {
       // Continue with populating Firebase and DOM
@@ -113,6 +119,20 @@ $(document).ready(function() {
         firstTrainTime : userFirstTrainTime,
         frequency : userFrequency
       });
+      isEditing = false;
+    }
+  });
+
+  // Discard Changes button click hanlder
+  $(document).on("click", "#discard-edits-btn", function() {
+    isEditing = false;
+  });
+
+  // Close Error Modal Button Click Handler
+  $(document).on("click", "#error-close", function() {
+    // Show edit modal if isEditing is true
+    if (isEditing) {
+      $("#edit-modal").modal("show");
     }
   });
 
@@ -216,7 +236,6 @@ $(document).ready(function() {
     $("#error-frequency").removeClass("error");
 
     var validationResult = true;
-
 
     // Check to see if user left any fields blank, if hours and minute are valid, and if frequency is positive
     // Add error CSS class to appropriate line based on results
