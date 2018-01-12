@@ -215,23 +215,31 @@ $(document).ready(function() {
     $("#error-minutes").removeClass("error");
     $("#error-frequency").removeClass("error");
 
+    var validationResult = true;
+
 
     // Check to see if user left any fields blank, if hours and minute are valid, and if frequency is positive
     // Add error CSS class to appropriate line based on results
     if (name.length === 0 || destination.length === 0 || first.length === 0 || frequency.length === 0) {
       $("#error-fields").addClass("error");
-      return false;
-    } else if (parseInt(first.substring(0,2)) >= 24) {
-      $("#error-hours").addClass("error");
-      return false;
-    } else if (parseInt(first.substring(3,5)) >= 60) {
-      $("#error-minutes").addClass("error");
-      return false;
-    } else if (parseInt(frequency) <= 0) {
-      $("#error-frequency").addClass("error");
-      return false;
-    } else {
-      return true;
+      validationResult = false;
     }
+
+    if (parseInt(first.substring(0,2)) >= 24) {
+      $("#error-hours").addClass("error");
+      validationResult = false;
+    }
+
+    if (parseInt(first.substring(3,5)) >= 60) {
+      $("#error-minutes").addClass("error");
+      validationResult = false;
+    }
+
+    if (parseInt(frequency) <= 0) {
+      $("#error-frequency").addClass("error");
+      validationResult =  false;
+    }
+
+    return validationResult;
   }
 });
