@@ -36,6 +36,14 @@ body {
   color: #121212;
 }
 
+.error {
+  color: red;
+}
+
+.error:after {
+  content: "*";
+}
+
 /* HEADER */
 .header-jumbotron {
   background-image: url("../images/earth-from-moon-min.jpg");

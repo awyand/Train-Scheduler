@@ -1,18 +1,8 @@
 $(document).ready(function() {
 
-  // Every second
-  setInterval(function() {
-    // Update current time in DOM
-    var currentTime = moment().format("HH:mm:ss");
-    $("#current-time").text(currentTime);
-    // Check to see if it's a new minute
-    if (currentTime.endsWith("00")) {
-      // If so, reload DOM from Firebase
-      db.ref().once("value").then(populateTable);
-    }
-  }, 1000);
 
-  ////// Firebase Initialization //////
+  ////// FIREBASE //////
+
 
   var config = {
     apiKey: "AIzaSyDuJehwSY6WYJWDaRzhPRsIXAVLcR4oK4E",
@@ -126,7 +116,22 @@ $(document).ready(function() {
     }
   });
 
+
   ////// FUNCTIONS //////
+
+
+  // Update clock every second and update train times every minute
+  // Every second
+  setInterval(function() {
+    // Update current time in DOM
+    var currentTime = moment().format("HH:mm:ss");
+    $("#current-time").text(currentTime);
+    // Check to see if it's a new minute
+    if (currentTime.endsWith("00")) {
+      // If so, reload DOM from Firebase
+      db.ref().once("value").then(populateTable);
+    }
+  }, 1000);
 
   // Populate Table Function
   function populateTable(snapshot) {
@@ -204,14 +209,26 @@ $(document).ready(function() {
   }
 
   function validateInputs(name, destination, first, frequency) {
+    // Remove error CSS class from all lines
+    $("#error-fields").removeClass("error");
+    $("#error-hours").removeClass("error");
+    $("#error-minutes").removeClass("error");
+    $("#error-frequency").removeClass("error");
+
+
     // Check to see if user left any fields blank, if hours and minute are valid, and if frequency is positive
+    // Add error CSS class to appropriate line based on results
     if (name.length === 0 || destination.length === 0 || first.length === 0 || frequency.length === 0) {
+      $("#error-fields").addClass("error");
       return false;
     } else if (parseInt(first.substring(0,2)) >= 24) {
+      $("#error-hours").addClass("error");
       return false;
     } else if (parseInt(first.substring(3,5)) >= 60) {
+      $("#error-minutes").addClass("error");
       return false;
     } else if (parseInt(frequency) <= 0) {
+      $("#error-frequency").addClass("error");
       return false;
     } else {
       return true;
