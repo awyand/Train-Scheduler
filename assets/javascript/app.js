@@ -43,7 +43,7 @@ $(document).ready(function() {
     var userFrequency = $("#input-frequency").val().trim();
 
     // If validateInputs() returns false
-    if (validateInputs(userTrainName, userDestination, userFirstTrainTime, userFrequency) === false) {
+    if (!validateInputs(userTrainName, userDestination, userFirstTrainTime, userFrequency)) {
       // Pop up modal with instructions
       $("#error-modal").modal("show");
     } else {
@@ -90,13 +90,18 @@ $(document).ready(function() {
       $("#edit-modal-input-destination").val(singleTrainSnap.val().destination);
       $("#edit-modal-input-first-train-time").val(singleTrainSnap.val().firstTrainTime);
       $("#edit-modal-input-frequency").val(singleTrainSnap.val().frequency);
+      // Give the Save Edits button a data-key equal to the Firebase ID
+      $("#save-edits-btn").attr("data-key", trainKey);
     });
     // Populate a modal
     $("#edit-modal").modal("show");
   });
 
-  // Save edits button click handler
+  // Save Edits button click handler
   $(document).on("click", "#save-edits-btn", function() {
+
+    // Get Firebase ID from button
+    var trainKey = $(this).attr("data-key");
 
     // Save user input to variables
     var userTrainName = $("#edit-modal-input-train-name").val().trim();
@@ -105,18 +110,20 @@ $(document).ready(function() {
     var userFrequency = $("#edit-modal-input-frequency").val().trim();
 
     // If validateInputs() returns false
-    if (validateInputs(userTrainName, userDestination, userFirstTrainTime, userFrequency) === false) {
+    if (!validateInputs(userTrainName, userDestination, userFirstTrainTime, userFrequency)) {
       // Pop up modal with instructions
       $("#error-modal").modal("show");
     } else {
       // Continue with populating Firebase and DOM
-      console.log("ok");
       $("#edit-modal").modal("hide");
+      // Update Firebase with values
+      db.ref(trainKey).set({
+        trainName : userTrainName,
+        destination : userDestination,
+        firstTrainTime : userFirstTrainTime,
+        frequency : userFrequency
+      });
     }
-
-
-    // Update Firebase
-    // Empty edit form
   });
 
   ////// FUNCTIONS //////
