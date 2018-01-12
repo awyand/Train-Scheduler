@@ -25,6 +25,17 @@ body {
   50% {opacity : 0;}
 }
 
+/* MODAL */
+#edit-modal-train-name {
+  font-weight: 700;
+  font-style: italic;
+}
+
+#save-edits-btn {
+  background-color: #F2B632;
+  color: #121212;
+}
+
 /* HEADER */
 .header-jumbotron {
   background-image: url("../images/earth-from-moon-min.jpg");

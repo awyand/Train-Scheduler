@@ -20,6 +20,44 @@
   </head>
   <body>
 
+    <!-- Edit Modal -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="edit-modal-label">Editing <span id="edit-modal-train-name"></span></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="edit-modal-input-train-name">Train Name</label>
+                <input type="text" class="form-control" id="edit-modal-input-train-name">
+              </div>
+              <div class="form-group">
+                <label for="edit-modal-input-destination">Destination</label>
+                <input type="text" class="form-control" id="edit-modal-input-destination">
+              </div>
+              <div class="form-group">
+                <label for="edit-modal-input-first-train-time">First Train Time (HH:mm)</label>
+                <input type="time" class="form-control" id="edit-modal-input-first-train-time">
+              </div>
+              <div class="form-group">
+                <label for="edit-modal-input-frequency">Frequency (min)</label>
+                <input type="number" class="form-control" id="edit-modal-input-frequency">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="discard-edits-btn">Discard Edits</button>
+            <button type="button" class="btn btn-primary" id="save-edits-btn">Save Edits</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Header -->
     <div class="jumbotron header-jumbotron">
       <div class="container header-text-container">
