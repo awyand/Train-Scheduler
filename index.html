@@ -4,7 +4,7 @@
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Moon Base Alpha Train Schedule</title>
+    <title>Lunar Transit Schedule</title>
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/custom.css">
@@ -33,7 +33,7 @@
           <div class="modal-body">
             <form>
               <div class="form-group">
-                <label for="edit-modal-input-train-name">Train Name</label>
+                <label for="edit-modal-input-train-name">Transit Name</label>
                 <input type="text" class="form-control" id="edit-modal-input-train-name">
               </div>
               <div class="form-group">
@@ -41,7 +41,7 @@
                 <input type="text" class="form-control" id="edit-modal-input-destination">
               </div>
               <div class="form-group">
-                <label for="edit-modal-input-first-train-time">First Train Time (HH:mm)</label>
+                <label for="edit-modal-input-first-train-time">First Transit Time (HH:mm)</label>
                 <input type="time" class="form-control" id="edit-modal-input-first-train-time">
               </div>
               <div class="form-group">
@@ -61,7 +61,7 @@
     <!-- Header -->
     <div class="jumbotron header-jumbotron">
       <div class="container header-text-container">
-        <h1 class="header-name">MOON BASE ALPHA TRAIN SCHEDULER</h1>
+        <h1 class="header-name">LUNAR TRANSIT PLANNER</h1>
         <p class="header-text">it's a long ride, but you can't beat that view</p>
       </div>
     </div>
@@ -79,7 +79,7 @@
 
       <!-- Current Schedule -->
       <div class="container section-container">
-        <h2 class="section-title">Moon Base Alpha Train Schedule</h2>
+        <h2 class="section-title">Moon Base Alpha Transit Schedule</h2>
         <!-- Schedule Table -->
         <table class="table text-center table-dark table-striped">
           <!-- Table Head -->
@@ -87,7 +87,7 @@
             <tr>
               <th scope="col">Delete</th>
               <th scope="col">Edit</th>
-              <th scope="col">Train Name</th>
+              <th scope="col">Transit Name</th>
               <th scope="col">Destination</th>
               <th scope="col">Frequency (min)</th>
               <th scope="col">Next Arrival</th>
@@ -103,13 +103,13 @@
 
       <!-- Input Form and Map Container -->
       <div class="container section-container">
-        <h2 class="section-title">Add Train</h2>
+        <h2 class="section-title">Add Transit</h2>
         <div class="row">
           <!-- Form -->
           <div class="col-md-6">
             <form>
               <div class="form-group">
-                <label for="input-train-name">Train Name</label>
+                <label for="input-train-name">Transit Name</label>
                 <input type="text" class="form-control" id="input-train-name" placeholder="Sea of Showers Express">
               </div>
               <div class="form-group">
@@ -118,14 +118,14 @@
                 <small class="form-text text-muted">For inspiration, see list of <a class="form-link" href="https://en.wikipedia.org/wiki/List_of_lunar_features" target="_blank">lunar features</a>.</small>
               </div>
               <div class="form-group">
-                <label for="input-first-train-time">First Train Time (HH:mm)</label>
+                <label for="input-first-train-time">First Transit Time (HH:mm)</label>
                 <input type="time" class="form-control" id="input-first-train-time" placeholder="00:30">
               </div>
               <div class="form-group">
                 <label for="input-frequency">Frequency (min)</label>
                 <input type="number" class="form-control" id="input-frequency" placeholder="90">
               </div>
-              <button type="submit" class="btn add-train-btn">Add Train</button>
+              <button type="submit" class="btn add-train-btn">Add Transit</button>
             </form>
           </div>
 

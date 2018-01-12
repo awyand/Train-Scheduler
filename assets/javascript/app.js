@@ -12,82 +12,6 @@ $(document).ready(function() {
     }
   }, 1000);
 
-  function populateTable(snapshot) {
-    // Empty table body
-    $("#schedule-body").empty();
-
-    // For each child in snapshot
-    snapshot.forEach(function(data) {
-      // Store each child to an object
-      var dbTrain = {
-        dbTrainName : data.val().trainName,
-        dbDestination : data.val().destination,
-        dbFirstTrainTime : data.val().firstTrainTime,
-        dbFrequency : data.val().frequency
-      }
-
-      // Calculate Next Arrival and Minutes Away
-
-      // Initialize variables
-      var nextTrainTime = 0;
-      var minutesUntilNextTrain = 0;
-      var blinkStatus = "";
-
-      // Save frequency as a number for math purposes
-      var frequencyInt = parseInt(dbTrain.dbFrequency);
-      // Get first train time as a moment object in HH:mm
-      var dbFirstTrainTimeObject = moment(dbTrain.dbFirstTrainTime, "HH:mm");
-      // Calculate how many minutes have passed since first train
-      var minutesSinceFirstTrain = moment().diff(moment(dbFirstTrainTimeObject), "minutes");
-
-      // Check to see if first train is in the future
-      if (minutesSinceFirstTrain < 0) {
-        nextTrainTime = dbFirstTrainTimeObject;
-        // 1 is added to match the way that moment does rounding for minutes
-        minutesUntilNextTrain = Math.abs(minutesSinceFirstTrain) + 1;
-      } else {
-        // Divide minutes passed since first train by frequency and get remainder (i.e. how many minutes since the most recent train left)
-        var minutesSinceLastTrain = minutesSinceFirstTrain % frequencyInt;
-        // Get minutes remaining until next train
-        minutesUntilNextTrain = frequencyInt - minutesSinceLastTrain;
-        // Add minutes until next train to current time to get next train time
-        nextTrainTime = moment().add(minutesUntilNextTrain, "minutes");
-      }
-
-      // Convert next train time to HH:mm format
-      var nextTrainTimeConverted = moment(nextTrainTime).format("HH:mm");
-
-      // If 1 minutes remains until next train, style to alert the user that the train is arriving now
-      if (minutesUntilNextTrain === 1) {
-        minutesUntilNextTrain = "ARRIVING NOW";
-        blinkStatus = "blink";
-      } else {
-        blinkStatus = "";
-      }
-
-      // Add each child to table
-      $("#schedule-body").append(`
-        <tr>
-          <td>
-            <button class="row-btn trash-btn" data-key="${data.key}">
-              <i class="far fa-trash-alt"></i>
-            </button>
-          </td>
-          <td>
-            <button class="row-btn edit-btn" data-key="${data.key}">
-              <i class="far fa-edit"></i>
-            </button>
-          </td>
-          <td>${dbTrain.dbTrainName}</td>
-          <td>${dbTrain.dbDestination}</td>
-          <td>${dbTrain.dbFrequency}</td>
-          <td>${nextTrainTimeConverted}</td>
-          <td class="${blinkStatus}">${minutesUntilNextTrain}</td>
-        </tr>
-        `);
-    });
-  }
-
   ////// Firebase Initialization //////
 
   var config = {
@@ -119,7 +43,6 @@ $(document).ready(function() {
     var userFrequency = $("#input-frequency").val().trim();
 
     // User input validation
-
     // Check to see if user left any fields blank
     if (userTrainName.length === 0 || userDestination.length === 0 || userFirstTrainTime.length === 0 || userFrequency.length === 0) {
       // Tell the user to complete all fields
@@ -159,82 +82,6 @@ $(document).ready(function() {
 
   // Firebase value change listener
   db.ref().on("value", populateTable);
-  // db.ref().on("value", function(snapshot) {
-  //
-  //   // Empty table body
-  //   $("#schedule-body").empty();
-  //
-  //   // For each child in snapshot
-  //   snapshot.forEach(function(data) {
-  //     // Store each child to an object
-  //     var dbTrain = {
-  //       dbTrainName : data.val().trainName,
-  //       dbDestination : data.val().destination,
-  //       dbFirstTrainTime : data.val().firstTrainTime,
-  //       dbFrequency : data.val().frequency
-  //     }
-  //
-  //     // Calculate Next Arrival and Minutes Away
-  //
-  //     // Initialize variables
-  //     var nextTrainTime = 0;
-  //     var minutesUntilNextTrain = 0;
-  //     var blinkStatus = "";
-  //
-  //     // Save frequency as a number for math purposes
-  //     var frequencyInt = parseInt(dbTrain.dbFrequency);
-  //     // Get first train time as a moment object in HH:mm
-  //     var dbFirstTrainTimeObject = moment(dbTrain.dbFirstTrainTime, "HH:mm");
-  //     // Calculate how many minutes have passed since first train
-  //     var minutesSinceFirstTrain = moment().diff(moment(dbFirstTrainTimeObject), "minutes");
-  //
-  //     // Check to see if first train is in the future
-  //     if (minutesSinceFirstTrain < 0) {
-  //       nextTrainTime = dbFirstTrainTimeObject;
-  //       // 1 is added to match the way that moment does rounding for minutes
-  //       minutesUntilNextTrain = Math.abs(minutesSinceFirstTrain) + 1;
-  //     } else {
-  //       // Divide minutes passed since first train by frequency and get remainder (i.e. how many minutes since the most recent train left)
-  //       var minutesSinceLastTrain = minutesSinceFirstTrain % frequencyInt;
-  //       // Get minutes remaining until next train
-  //       minutesUntilNextTrain = frequencyInt - minutesSinceLastTrain;
-  //       // Add minutes until next train to current time to get next train time
-  //       nextTrainTime = moment().add(minutesUntilNextTrain, "minutes");
-  //     }
-  //
-  //     // Convert next train time to HH:mm format
-  //     var nextTrainTimeConverted = moment(nextTrainTime).format("HH:mm");
-  //
-  //     // If 1 minutes remains until next train, style to alert the user that the train is arriving now
-  //     if (minutesUntilNextTrain === 1) {
-  //       minutesUntilNextTrain = "ARRIVING NOW";
-  //       blinkStatus = "blink";
-  //     } else {
-  //       blinkStatus = "";
-  //     }
-  //
-  //     // Add each child to table
-  //     $("#schedule-body").append(`
-  //       <tr>
-  //         <td>
-  //           <button class="row-btn trash-btn" data-key="${data.key}">
-  //             <i class="far fa-trash-alt"></i>
-  //           </button>
-  //         </td>
-  //         <td>
-  //           <button class="row-btn edit-btn" data-key="${data.key}">
-  //             <i class="far fa-edit"></i>
-  //           </button>
-  //         </td>
-  //         <td>${dbTrain.dbTrainName}</td>
-  //         <td>${dbTrain.dbDestination}</td>
-  //         <td>${dbTrain.dbFrequency}</td>
-  //         <td>${nextTrainTimeConverted}</td>
-  //         <td class="${blinkStatus}">${minutesUntilNextTrain}</td>
-  //       </tr>
-  //       `);
-  //   });
-  // });
 
   // Delete button click handler
   $(document).on("click", ".trash-btn", function() {
@@ -271,4 +118,78 @@ $(document).ready(function() {
   ////// FUNCTIONS //////
   // validate input function
 
+  // Populate Table Function
+  function populateTable(snapshot) {
+    // Empty table body
+    $("#schedule-body").empty();
+
+    // For each child in snapshot
+    snapshot.forEach(function(data) {
+      // Store each child to an object
+      var dbTrain = {
+        dbTrainName : data.val().trainName,
+        dbDestination : data.val().destination,
+        dbFirstTrainTime : data.val().firstTrainTime,
+        dbFrequency : data.val().frequency
+      }
+
+      // Calculate Next Arrival and Minutes Away
+      // Initialize variables
+      var nextTrainTime = 0;
+      var minutesUntilNextTrain = 0;
+      var blinkStatus = "";
+
+      // Save frequency as a number for math purposes
+      var frequencyInt = parseInt(dbTrain.dbFrequency);
+      // Get first train time as a moment object in HH:mm
+      var dbFirstTrainTimeObject = moment(dbTrain.dbFirstTrainTime, "HH:mm");
+      // Calculate how many minutes have passed since first train
+      var minutesSinceFirstTrain = moment().diff(moment(dbFirstTrainTimeObject), "minutes");
+
+      // Check to see if first train is in the future
+      if (minutesSinceFirstTrain < 0) {
+        nextTrainTime = dbFirstTrainTimeObject;
+        // 1 is added to match the way that moment does rounding for minutes
+        minutesUntilNextTrain = Math.abs(minutesSinceFirstTrain) + 1;
+      } else {
+        // Divide minutes passed since first train by frequency and get remainder (i.e. how many minutes since the most recent train left)
+        var minutesSinceLastTrain = minutesSinceFirstTrain % frequencyInt;
+        // Get minutes remaining until next train
+        minutesUntilNextTrain = frequencyInt - minutesSinceLastTrain;
+        // Add minutes until next train to current time to get next train time
+        nextTrainTime = moment().add(minutesUntilNextTrain, "minutes");
+      }
+
+      // Convert next train time to HH:mm format
+      var nextTrainTimeConverted = moment(nextTrainTime).format("HH:mm");
+
+      // If 1 minutes remains until next train, style to alert the user that the train is arriving
+      if (minutesUntilNextTrain === 1) {
+        minutesUntilNextTrain = "ARRIVING";
+        blinkStatus = "blink";
+      } else {
+        blinkStatus = "";
+      }
+
+      // Add each child to table
+      $("#schedule-body").append(`
+        <tr>
+          <td>
+            <button class="row-btn trash-btn" data-key="${data.key}">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </td>
+          <td>
+            <button class="row-btn edit-btn" data-key="${data.key}">
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td>${dbTrain.dbTrainName}</td>
+          <td>${dbTrain.dbDestination}</td>
+          <td>${dbTrain.dbFrequency}</td>
+          <td>${nextTrainTimeConverted}</td>
+          <td class="${blinkStatus}">${minutesUntilNextTrain}</td>
+        </tr>`);
+    });
+  }
 });
