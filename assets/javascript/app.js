@@ -42,31 +42,18 @@ $(document).ready(function() {
     var userFirstTrainTime = $("#input-first-train-time").val().trim();
     var userFrequency = $("#input-frequency").val().trim();
 
-    // User input validation
-    // Check to see if user left any fields blank
-    if (userTrainName.length === 0 || userDestination.length === 0 || userFirstTrainTime.length === 0 || userFrequency.length === 0) {
-      // Tell the user to complete all fields
-      alert("Please complete all fields");
-    // Check to see if user has entered invalid numbers for first train in HH:mm
-    // This should be handled by form input type (time) but as a fallback
-    } else if (parseInt(userFirstTrainTime.substring(0,2)) >= 24) {
-      // Tell the user that hours must be less than 24
-      alert("Hours must be less than 24");
-    } else if (parseInt(userFirstTrainTime.substring(3,5)) >= 60) {
-      // Tell the user that minutes must be less than 60
-      alert("Minutes must be less than 60");
-    // Check to see if user has entered invalid number for frequency
-    } else if (parseInt(userFrequency) <= 0) {
-      // Tell the user that frequnecy must be a positive number
-      alert("Frequnecy must be a positive number");
-    // If all user input validation is okay, continue with Firebase population
+    // If validateInputs() returns false
+    if (validateInputs(userTrainName, userDestination, userFirstTrainTime, userFrequency) === false) {
+      // Pop up modal with instructions
+      $("#error-modal").modal("show");
     } else {
-      // Save user inputs to a newTrain object to push to Firebase
+      // Continue with populating Firebase and DOM
+
       var newTrain = {
         trainName : $("#input-train-name").val().trim(),
         destination : $("#input-destination").val().trim(),
         firstTrainTime : $("#input-first-train-time").val().trim(),
-        frequency : $("#input-frequency").val().trim()
+        frequency : Math.round($("#input-frequency").val().trim())
       };
 
       // Upload to Firebase
@@ -110,13 +97,29 @@ $(document).ready(function() {
 
   // Save edits button click handler
   $(document).on("click", "#save-edits-btn", function() {
-    // Send to validate inputs
+
+    // Save user input to variables
+    var userTrainName = $("#edit-modal-input-train-name").val().trim();
+    var userDestination = $("#edit-modal-input-destination").val().trim();
+    var userFirstTrainTime = $("#edit-modal-input-first-train-time").val().trim();
+    var userFrequency = $("#edit-modal-input-frequency").val().trim();
+
+    // If validateInputs() returns false
+    if (validateInputs(userTrainName, userDestination, userFirstTrainTime, userFrequency) === false) {
+      // Pop up modal with instructions
+      $("#error-modal").modal("show");
+    } else {
+      // Continue with populating Firebase and DOM
+      console.log("ok");
+      $("#edit-modal").modal("hide");
+    }
+
+
     // Update Firebase
     // Empty edit form
   });
 
   ////// FUNCTIONS //////
-  // validate input function
 
   // Populate Table Function
   function populateTable(snapshot) {
@@ -191,5 +194,20 @@ $(document).ready(function() {
           <td class="${blinkStatus}">${minutesUntilNextTrain}</td>
         </tr>`);
     });
+  }
+
+  function validateInputs(name, destination, first, frequency) {
+    // Check to see if user left any fields blank, if hours and minute are valid, and if frequency is positive
+    if (name.length === 0 || destination.length === 0 || first.length === 0 || frequency.length === 0) {
+      return false;
+    } else if (parseInt(first.substring(0,2)) >= 24) {
+      return false;
+    } else if (parseInt(first.substring(3,5)) >= 60) {
+      return false;
+    } else if (parseInt(frequency) <= 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 });

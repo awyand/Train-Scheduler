@@ -58,6 +58,30 @@
       </div>
     </div>
 
+    <!-- Error Modal -->
+    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="error-modal-label">Invalid Input</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h6>Sorry, it looks like you entered something invalid.</h6>
+            <p>Please ensure that your values meet the following requirements:</p>
+            <ul>
+              <li>All fields are filled in.</li>
+              <li>Hours are less than 24.</li>
+              <li>Minutes are less than 60.</li>
+              <li>Frequency is greater than 0.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Header -->
     <div class="jumbotron header-jumbotron">
       <div class="container header-text-container">
@@ -99,8 +123,6 @@
         </table>
       </div>
 
-
-
       <!-- Input Form and Map Container -->
       <div class="container section-container">
         <h2 class="section-title">Add Transit</h2>
@@ -139,8 +161,6 @@
 
       </div> <!-- End Input Form and Map Container -->
     </div> <!-- End Main Body Container -->
-
-
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
