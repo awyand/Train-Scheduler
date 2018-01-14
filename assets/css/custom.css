@@ -1,10 +1,9 @@
 /* GENERAL */
-
 html,
 body {
   font-family: 'Oxygen', sans-serif;
   background-image: linear-gradient(-90deg, #3B3B3B, #FFFFFF);
-  color: #121212
+  color: #121212;
 }
 
 .main-body-container {
@@ -21,12 +20,12 @@ body {
   animation: blinker 2s linear infinite;
   color: #F2B632;
 }
+
 @keyframes blinker {
   50% {opacity : 0;}
 }
 
-/* MODAL */
-
+/* MODALS */
 .modal-header {
   background-color: #F2B632;
 }
@@ -79,6 +78,11 @@ body {
 
 .header-name {
   font-weight: 700;
+  margin-bottom: 0;
+}
+
+.header-text {
+  margin-bottom: 0;
 }
 
 /* CURRENT TIME */

@@ -1,5 +1,10 @@
 $(document).ready(function() {
 
+
+  ////// GLOBAL VARIABLES //////
+
+
+  // Boolean for tracking if the user is in edit mode or not (for modal choice making)
   var isEditing = false;
 
 
@@ -40,8 +45,9 @@ $(document).ready(function() {
       // Show error modal
       $("#error-modal").modal("show");
     } else {
-      // Continue with populating Firebase and DOM
+      // Otherwise continue with populating Firebase and DOM
 
+      // Save user values to a new train object
       var newTrain = {
         trainName : $("#input-train-name").val().trim(),
         destination : $("#input-destination").val().trim(),
@@ -60,7 +66,7 @@ $(document).ready(function() {
     }
   });
 
-  // Firebase value change listener
+  // Firebase value change listener - call populateTable function
   db.ref().on("value", populateTable);
 
   // Delete button click handler
@@ -148,7 +154,7 @@ $(document).ready(function() {
     $("#current-time").text(currentTime);
     // Check to see if it's a new minute
     if (currentTime.endsWith("00")) {
-      // If so, reload DOM from Firebase
+      // If so, reload DOM from Firebase by calling populateTable function
       db.ref().once("value").then(populateTable);
     }
   }, 1000);
@@ -183,6 +189,7 @@ $(document).ready(function() {
 
       // Check to see if first train is in the future
       if (minutesSinceFirstTrain < 0) {
+        // Set next train time to first train time
         nextTrainTime = dbFirstTrainTimeObject;
         // 1 is added to match the way that moment does rounding for minutes
         minutesUntilNextTrain = Math.abs(minutesSinceFirstTrain) + 1;
@@ -206,7 +213,7 @@ $(document).ready(function() {
         blinkStatus = "";
       }
 
-      // Add each child to table
+      // Add each child to table as a row
       $("#schedule-body").append(`
         <tr>
           <td>
@@ -235,6 +242,7 @@ $(document).ready(function() {
     $("#error-minutes").removeClass("error");
     $("#error-frequency").removeClass("error");
 
+    // Initialize validationResult boolean to true
     var validationResult = true;
 
     // Check to see if user left any fields blank, if hours and minute are valid, and if frequency is positive
